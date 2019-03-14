@@ -4,16 +4,15 @@ import android.os.*
 import android.view.*
 import androidx.databinding.*
 import androidx.fragment.app.*
-import androidx.lifecycle.*
-import ml.kari.notes.R
-import ml.kari.notes.databinding.*
+import ml.kari.notes.*
 import ml.kari.notes.viewmodel.*
+import org.koin.androidx.viewmodel.ext.android.*
 
 class NotesListFragment: Fragment() {
 
-  lateinit var binding: FragmentNotesListBinding
+  lateinit var binding: ViewDataBinding
 
-  lateinit var viewModel: NotesListViewModel
+  val viewModel: NotesListViewModel by viewModel()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
@@ -25,8 +24,8 @@ class NotesListFragment: Fragment() {
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    viewModel = ViewModelProviders.of(this).get(NotesListViewModel::class.java)
-    binding.viewModel = viewModel
+    //viewModel = ViewModelProviders.of(this).get(NotesListViewModel::class.java)
+    //binding.viewModel = viewModel
 
     viewModel.onScreenShowed()
 

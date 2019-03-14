@@ -3,10 +3,35 @@ package ml.kari.notes
 import android.annotation.*
 import android.app.*
 import android.util.*
+import ml.kari.notes.network.*
+import ml.kari.notes.repository.*
+import ml.kari.notes.viewmodel.*
 import org.koin.android.ext.android.*
+import org.koin.androidx.viewmodel.ext.koin.*
+import org.koin.dsl.module.*
+import retrofit2.*
 import timber.log.*
 
 class App: Application() {
+
+  companion object {
+    val applicationModule : Module = module {
+      viewModel { NoteDetailViewModel() }
+      viewModel { NotesListViewModel(get()) }
+      single { CachedNotesRepository(get()) as NotesRepository }
+    }
+
+    val networkModule : Module = module {
+      single( definition = { createWebService<NotesRequestService>(UrlConst.API_ENDPOINT) })
+    }
+
+    private inline fun <reified T> createWebService(url: String): T {
+      val retrofit = Retrofit.Builder()
+        .baseUrl(url)
+        .build()
+      return retrofit.create(T::class.java)
+    }
+  }
 
   /**
    * [Timber.Tree] class used for logging in debug mode.
@@ -36,11 +61,10 @@ class App: Application() {
   override fun onCreate() {
     super.onCreate()
 
-    startKoin(this, listOf())
+    startKoin(this, listOf(applicationModule, networkModule))
 
     if (BuildConfig.DEBUG) {
       Timber.plant(DebugTree())
     }
   }
-
 }
