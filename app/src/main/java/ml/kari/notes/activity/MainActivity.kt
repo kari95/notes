@@ -15,20 +15,13 @@ class MainActivity: BaseActivity<ActivityMainBinding>() {
     super.onCreate(savedInstanceState)
 
     bindView(R.layout.activity_main)
+    setSupportActionBar(binding.toolbar)
 
     navHost = supportFragmentManager
       .findFragmentById(R.id.nav_host) as NavHostFragment
-    
   }
-
-  /*
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      return NavigationUI.onNavDestinationSelected(item, navHost.navController) || super.onOptionsItemSelected(item)
-  }
-  */
 
   override fun onSupportNavigateUp(): Boolean {
     return navHost.navController.navigateUp() || super.onSupportNavigateUp()
-    //return NavigationUI.navigateUp(drawer, navHost.navController) || super.onSupportNavigateUp()
   }
 }

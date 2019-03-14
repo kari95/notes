@@ -7,7 +7,7 @@
     <import type="android.view.View"/>
     <variable
       name="viewModel"
-      type="ml.kari.notes.viewmodel.MenuViewModel"
+      type="ml.kari.notes.viewmodel.NotesListViewModel"
       />
   </data>
 

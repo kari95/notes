@@ -9,23 +9,23 @@ import ml.kari.notes.R
 import ml.kari.notes.databinding.*
 import ml.kari.notes.viewmodel.*
 
-class MenuFragment: Fragment() {
+class NotesListFragment: Fragment() {
 
-  lateinit var binding: FragmentMenuBinding
+  lateinit var binding: FragmentNotesListBinding
 
-  lateinit var viewModel: MenuViewModel
+  lateinit var viewModel: NotesListViewModel
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
 
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes_list, container, false)
     setHasOptionsMenu(true)
     return binding.root
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    viewModel = ViewModelProviders.of(this).get(MenuViewModel::class.java)
+    viewModel = ViewModelProviders.of(this).get(NotesListViewModel::class.java)
     binding.viewModel = viewModel
 
     viewModel.onScreenShowed()
