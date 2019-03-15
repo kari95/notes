@@ -10,4 +10,5 @@
   <color name="colorDividers">#BDBDBD</color>
 
   <color name="colorOverlay">#55FFFFFF</color>
+  <color name="colorTransparentWhite">#ddFFFFFF</color>
 </resources>
