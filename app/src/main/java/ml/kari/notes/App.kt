@@ -20,7 +20,7 @@ class App: Application() {
     val applicationModule : Module = module {
       viewModel { NoteDetailViewModel() }
       viewModel { NotesListViewModel(get()) }
-      single { CachedNotesRepository(get()) as NotesRepository }
+      single { MockNotesRepository() as NotesRepository }
     }
 
     val networkModule : Module = module {

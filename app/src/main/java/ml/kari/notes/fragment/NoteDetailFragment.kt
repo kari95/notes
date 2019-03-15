@@ -2,6 +2,7 @@ package ml.kari.notes.fragment
 
 import android.os.*
 import android.view.*
+import androidx.appcompat.app.*
 import androidx.fragment.app.*
 import ml.kari.notes.R
 import ml.kari.notes.viewmodel.*
@@ -18,7 +19,6 @@ class NoteDetailFragment: BaseFragment() {
   }
 
   override fun setupView() {
-
   }
 
   override fun addListeners() {

@@ -6,12 +6,13 @@ import ml.kari.notes.model.*
 import ml.kari.notes.network.*
 import retrofit2.*
 import timber.log.*
+import java.util.*
 
-class CachedNotesRepository(
+class NetworkNotesRepository(
   private val notesRequestService: NotesRequestService
 ): NotesRepository {
 
-  private val _notes: MutableMap<Int, Note> = mutableMapOf()
+  private val _notes: MutableMap<Int, Note> = TreeMap()
   private val mutableNotes: MutableLiveData<List<Note>> = MutableLiveData()
 
   override val notes: LiveData<List<Note>> = mutableNotes

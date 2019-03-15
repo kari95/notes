@@ -33,7 +33,7 @@
       android:name="ml.kari.notes.activity.MainActivity"
       android:theme="@style/AppTheme.NoActionBar"
       >
-      <nav-graph android:value="@navigation/app_navigation"/>
+      <nav-graph android:value="@navigation/list_navigation"/>
     </activity>
 
   </application>
