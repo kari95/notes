@@ -7,7 +7,7 @@ import ml.kari.notes.R
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
 
-class NoteDetailFragment: Fragment() {
+class NoteDetailFragment: BaseFragment() {
 
   private val viewModel: NotesListViewModel by viewModel()
 
@@ -17,15 +17,18 @@ class NoteDetailFragment: Fragment() {
     return inflater.inflate(R.layout.fragment_note_detail, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun setupView() {
+
+  }
+
+  override fun addListeners() {
+
+  }
+
+  override fun onStart() {
+    super.onStart()
 
     viewModel.onScreenShowed()
-
-    addListeners()
-  }
-  private fun addListeners() {
-
   }
 
 }

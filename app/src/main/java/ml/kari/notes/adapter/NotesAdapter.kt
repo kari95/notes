@@ -6,15 +6,20 @@ import kotlinx.android.synthetic.main.item_note.view.*
 import ml.kari.notes.*
 import ml.kari.notes.model.*
 
-class MealAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NotesAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  var notes: List<Note> = emptyList()
+  private val _notes: MutableList<Note> = mutableListOf()
+
+  var notes: List<Note>
     set(value) {
-      val result = DiffUtil.calculateDiff(DiffCallback(field, value))
-      field = value
+      val result = DiffUtil.calculateDiff(DiffCallback(_notes, value))
+
+      _notes.clear()
+      _notes.addAll(value)
 
       result.dispatchUpdatesTo(this)
     }
+  get() = _notes
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
