@@ -3,6 +3,7 @@ package ml.kari.notes
 import android.annotation.*
 import android.app.*
 import android.util.*
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.*
 import ml.kari.notes.network.*
 import ml.kari.notes.repository.*
 import ml.kari.notes.viewmodel.*
@@ -10,6 +11,7 @@ import org.koin.android.ext.android.*
 import org.koin.androidx.viewmodel.ext.koin.*
 import org.koin.dsl.module.*
 import retrofit2.*
+import retrofit2.converter.moshi.*
 import timber.log.*
 
 class App: Application() {
@@ -28,6 +30,8 @@ class App: Application() {
     private inline fun <reified T> createWebService(url: String): T {
       val retrofit = Retrofit.Builder()
         .baseUrl(url)
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .addConverterFactory(MoshiConverterFactory.create())
         .build()
       return retrofit.create(T::class.java)
     }

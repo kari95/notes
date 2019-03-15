@@ -12,7 +12,7 @@ class NotesAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<Re
 
   var notes: List<Note>
     set(value) {
-      val result = DiffUtil.calculateDiff(DiffCallback(_notes, value))
+      val result = DiffUtil.calculateDiff(DiffCallback(notes, value))
 
       _notes.clear()
       _notes.addAll(value)
@@ -30,9 +30,9 @@ class NotesAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<Re
   override fun getItemCount() = notes.size
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    val task = notes[position]
+    val note = notes[position]
     when (holder) {
-      is NoteViewHolder -> holder.bind(task, onClick)
+      is NoteViewHolder -> holder.bind(note, onClick)
     }
   }
 }
@@ -41,6 +41,7 @@ class NoteViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
   fun bind(note: Note, listener: (Note) -> Unit) {
     itemView.title.text = note.title
+    itemView.container.setOnClickListener { listener(note) }
   }
 }
 

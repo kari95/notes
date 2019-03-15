@@ -21,6 +21,7 @@ class MainActivity: AppCompatActivity() {
   }
 
   override fun onSupportNavigateUp(): Boolean {
-    return navHost.navController.navigateUp() || super.onSupportNavigateUp()
+    return navHost.navController.navigateUp() || super
+      .onSupportNavigateUp()
   }
 }

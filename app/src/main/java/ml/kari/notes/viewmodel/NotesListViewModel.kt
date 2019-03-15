@@ -14,6 +14,10 @@ class NotesListViewModel(
     notesRepository.updateNotes()
   }
 
+  fun onRefresh() {
+    notesRepository.updateNotes()
+  }
+
   fun onNoteClick(note: Note) {
 
   }
