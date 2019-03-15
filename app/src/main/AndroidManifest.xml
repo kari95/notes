@@ -29,7 +29,10 @@
       </intent-filter>
     </activity>
 
-    <activity android:name="ml.kari.notes.activity.MainActivity">
+    <activity
+      android:name="ml.kari.notes.activity.MainActivity"
+      android:theme="@style/AppTheme.NoActionBar"
+      >
       <nav-graph android:value="@navigation/app_navigation"/>
     </activity>
 
