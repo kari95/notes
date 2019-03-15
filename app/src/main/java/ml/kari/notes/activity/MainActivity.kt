@@ -1,21 +1,20 @@
 package ml.kari.notes.activity
 
 import android.os.*
+import androidx.appcompat.app.*
 import androidx.navigation.fragment.*
-import ml.kari.core.activity.*
+import kotlinx.android.synthetic.main.activity_main.*
 import ml.kari.notes.R
-import ml.kari.notes.databinding.*
 
-class MainActivity: BaseActivity<ActivityMainBinding>() {
+class MainActivity: AppCompatActivity() {
 
   lateinit var navHost: NavHostFragment
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
 
-    bindView(R.layout.activity_main)
-    setSupportActionBar(binding.toolbar)
+    setSupportActionBar(toolbar)
 
     navHost = supportFragmentManager
       .findFragmentById(R.id.nav_host) as NavHostFragment

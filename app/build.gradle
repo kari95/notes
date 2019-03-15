@@ -22,9 +22,6 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
-  dataBinding {
-    enabled = true
-  }
 }
 
 dependencies {
@@ -64,6 +61,5 @@ dependencies {
 
   // Time Picker
   implementation "com.wdullaer:materialdatetimepicker:3.6.4"
-  implementation project(path: ':core')
 
 }

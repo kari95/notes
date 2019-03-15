@@ -14,15 +14,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/list_item_padding"
+    android:padding="@dimen/margin_padding_normal"
     android:background="?android:attr/selectableItemBackground"
     >
     <TextView
       style="@style/TextAppearance.AppCompat.Medium"
-      android:id="@+id/name"
+      android:id="@+id/title"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="@dimen/margin_padding_normal"
       android:text="@{note.title}"
       android:textColor="@color/colorPrimaryText"
       />

@@ -1,10 +1,10 @@
 package ml.kari.notes.adapter
 
 import android.view.*
-import androidx.databinding.*
 import androidx.recyclerview.widget.*
+import kotlinx.android.synthetic.main.item_note.view.*
+import ml.kari.notes.*
 import ml.kari.notes.model.*
-import ml.kari.notes.databinding.*
 
 class MealAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -18,7 +18,8 @@ class MealAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<Rec
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
-    return NoteViewHolder(ItemNoteBinding.inflate(inflater, parent, false))
+    val itemView =  inflater.inflate(R.layout.item_note, parent, false)
+    return NoteViewHolder(itemView)
   }
 
   override fun getItemCount() = notes.size
@@ -31,12 +32,10 @@ class MealAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<Rec
   }
 }
 
-class NoteViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
+class NoteViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-  fun bind(note: Note, listener: (Note) -> Unit) = with(binding.root) {
-    if (binding is ItemNoteBinding)
-      binding.note = note
-    setOnClickListener { listener(note) }
+  fun bind(note: Note, listener: (Note) -> Unit) {
+    itemView.title.text = note.title
   }
 }
 
