@@ -32,7 +32,8 @@ class NotesListFragment: BaseFragment() {
     toolbar_background.requestLayout()
 
     toolbar.setPadding(0, getStatusBarHeight(), 0, 0)
-    (activity as AppCompatActivity).setSupportActionBar(toolbar)
+    toolbar.layoutParams.height += getStatusBarHeight()
+    toolbar.title = getString(R.string.app_name)
 
     notesAdapter = NotesAdapter(viewModel::onNoteClick)
     notes_list.adapter = notesAdapter
@@ -43,22 +44,6 @@ class NotesListFragment: BaseFragment() {
   override fun addListeners() {
 
     swipe_refresh.setOnRefreshListener(viewModel::onRefresh)
-
-    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      notes_list.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          super.onScrolled(recyclerView, dx, dy)
-
-          if (!recyclerView.canScrollVertically(-1)) {
-            // we have reached the top of the list
-            toolbar?.elevation = 0f
-          } else {
-            // we are not at the top yet
-            toolbar?.elevation = 20f
-          }
-        }
-      })
-    }*/
 
     viewModel.notes.observe(this, Observer { notes ->
       notesAdapter?.notes = notes
