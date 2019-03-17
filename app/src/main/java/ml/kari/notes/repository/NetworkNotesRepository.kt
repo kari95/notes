@@ -33,6 +33,21 @@ class NetworkNotesRepository(
     }
   }
 
+  override fun getNote(id: Int): LiveData<Note> {
+    val data = MutableLiveData<Note>()
+    launch {
+      try {
+
+        val note = notesRequestService.getNote(id).await()
+        data.value = note
+      } catch (e: HttpException) {
+        Timber.e(e)
+      }
+      propagateNotes()
+    }
+    return data
+  }
+
   override fun saveNote(note: Note) {
   }
 

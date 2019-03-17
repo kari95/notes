@@ -2,22 +2,17 @@ package ml.kari.notes.fragment
 
 import android.os.*
 import android.view.*
-import androidx.appcompat.app.*
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_notes_list.*
-import ml.kari.notes.*
+import ml.kari.notes.R
 import ml.kari.notes.adapter.*
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
-import android.view.ViewGroup
-
-
 
 class NotesListFragment: BaseFragment() {
 
-  private val viewModel: NotesListViewModel by viewModel()
+  private val viewModel: NotesListViewModel by sharedViewModel()
   private var notesAdapter: NotesAdapter? = null
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

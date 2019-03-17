@@ -9,5 +9,7 @@ interface NotesRepository {
 
   fun updateNotes()
 
+  fun getNote(id: Int): LiveData<Note>
+
   fun saveNote(note: Note)
 }

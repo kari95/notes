@@ -18,7 +18,7 @@ class App: Application() {
 
   companion object {
     val applicationModule : Module = module {
-      viewModel { NoteDetailViewModel() }
+      viewModel { NoteDetailViewModel(get()) }
       viewModel { NotesListViewModel(get()) }
       single { MockNotesRepository() as NotesRepository }
     }

@@ -4,6 +4,7 @@ import android.os.*
 import android.view.*
 import androidx.appcompat.app.*
 import androidx.fragment.app.*
+import androidx.navigation.fragment.*
 import kotlinx.android.synthetic.main.fragment_notes_list.*
 import ml.kari.notes.R
 import ml.kari.notes.viewmodel.*
@@ -12,6 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.*
 class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
 
   private val viewModel: NoteDetailViewModel by viewModel()
+  private val args: NoteDetailFragmentArgs by navArgs()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
@@ -52,7 +54,7 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
   override fun onStart() {
     super.onStart()
 
-    viewModel.onScreenShowed()
+    viewModel.onScreenShowed(args.noteId)
   }
 
   override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

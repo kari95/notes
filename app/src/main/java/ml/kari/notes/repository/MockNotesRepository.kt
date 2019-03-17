@@ -33,6 +33,12 @@ class MockNotesRepository: NotesRepository {
     propagateNotes()
   }
 
+  override fun getNote(id: Int): LiveData<Note> {
+    val data = MutableLiveData<Note>()
+    data.value = _notes[id]
+    return data
+  }
+
   override fun saveNote(note: Note) {
   }
 
