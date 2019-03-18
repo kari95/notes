@@ -14,7 +14,8 @@ class MainActivity: AppCompatActivity() {
 
   private val listViewModel: NotesListViewModel by viewModel()
 
-  lateinit var navHost: NavHostFragment
+  private lateinit var listNavHost: NavHostFragment
+  private var detailNavHost: NavHostFragment? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -22,26 +23,38 @@ class MainActivity: AppCompatActivity() {
 
     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-    navHost = supportFragmentManager
+    listNavHost = supportFragmentManager
       .findFragmentById(R.id.nav_host) as NavHostFragment
+
+    if (isTablet()) {
+      detailNavHost = supportFragmentManager
+        .findFragmentById(R.id.nav_host_detail) as NavHostFragment
+    }
 
     setupView()
     addListeners()
   }
 
   private fun setupView() {
-
   }
 
   private fun addListeners() {
     listViewModel.openNote.observe(this, Observer { note ->
-      val action = NotesListFragmentDirections.actionOpenDetail(note.id)
-      navHost.navController.navigate(action)
+      if (isTablet()) {
+        val action = NoteDetailFragmentDirections.actionOpenDetail()
+        action.noteId = note.id
+        detailNavHost?.navController?.navigate(action)
+      } else {
+        val action = NotesListFragmentDirections.actionOpenDetail(note.id)
+        listNavHost.navController.navigate(action)
+      }
     })
   }
 
   override fun onSupportNavigateUp(): Boolean {
-    return navHost.navController.navigateUp() || super
+    return listNavHost.navController.navigateUp() || super
       .onSupportNavigateUp()
   }
+
+  private fun isTablet(): Boolean = resources.getBoolean(R.bool.is_tablet)
 }
