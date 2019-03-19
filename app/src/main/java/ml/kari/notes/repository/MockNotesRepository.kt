@@ -43,7 +43,16 @@ class MockNotesRepository: NotesRepository {
     return data
   }
 
-  override fun saveNote(note: Note) {
+  override fun saveNote(note: Note): LiveData<Note> {
+    val data = MutableLiveData<Note>()
+    val id = note.id
+    if (id > 0 &&  id < _notes.size) {
+      _notes[id] = note
+    } else {
+      note.id = _notes.size
+      _notes.add(note)
+    }
+    return data
   }
 
   private fun propagateNotes() {

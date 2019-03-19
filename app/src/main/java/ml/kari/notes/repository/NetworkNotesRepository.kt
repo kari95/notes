@@ -48,7 +48,8 @@ class NetworkNotesRepository(
     return data
   }
 
-  override fun saveNote(note: Note) {
+  override fun saveNote(note: Note): LiveData<Note> {
+    return MutableLiveData<Note>()
   }
 
   private fun propagateNotes() {

@@ -22,6 +22,11 @@ class NoteDetailViewModel(
     this.noteId.value = noteId
   }
 
+  fun onNoteChanged(text: String) {
+
+    notesRepository.saveNote()
+  }
+
   fun onDeleteClick() {
     closeNote.call()
   }

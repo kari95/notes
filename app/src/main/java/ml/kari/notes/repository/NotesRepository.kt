@@ -11,5 +11,5 @@ interface NotesRepository {
 
   fun getNote(id: Int): LiveData<Note>
 
-  fun saveNote(note: Note)
+  fun saveNote(note: Note): LiveData<Note>
 }
