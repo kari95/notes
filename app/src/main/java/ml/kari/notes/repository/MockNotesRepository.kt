@@ -35,7 +35,11 @@ class MockNotesRepository: NotesRepository {
 
   override fun getNote(id: Int): LiveData<Note> {
     val data = MutableLiveData<Note>()
-    data.value = _notes[id]
+    if (id > 0 &&  id < _notes.size) {
+      data.value = _notes[id]
+    } else {
+      data.value = Note(id)
+    }
     return data
   }
 

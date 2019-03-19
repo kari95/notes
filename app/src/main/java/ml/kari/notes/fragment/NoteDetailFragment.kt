@@ -3,9 +3,9 @@ package ml.kari.notes.fragment
 import android.os.*
 import android.view.*
 import androidx.appcompat.app.*
-import androidx.fragment.app.*
+import androidx.lifecycle.*
 import androidx.navigation.fragment.*
-import kotlinx.android.synthetic.main.fragment_notes_list.*
+import kotlinx.android.synthetic.main.fragment_note_detail.*
 import ml.kari.notes.R
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
@@ -25,10 +25,10 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
 
     setHasOptionsMenu(true)
 
-    toolbar.setPadding(0, getStatusBarHeight(), 0, 0)
-    toolbar.layoutParams.height += getStatusBarHeight()
+    detail_toolbar.setPadding(0, getStatusBarHeight(), 0, 0)
+    detail_toolbar.layoutParams.height += getStatusBarHeight()
     val supportActivity = activity as AppCompatActivity
-    supportActivity.setSupportActionBar(toolbar)
+    supportActivity.setSupportActionBar(detail_toolbar)
     supportActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
     if (!isTablet()) {
       supportActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -37,21 +37,13 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
 
   override fun addListeners() {
 
-    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      notes_list.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          super.onScrolled(recyclerView, dx, dy)
+    viewModel.note.observe(this, Observer { note ->
+      note_text.setText(note.title)
+    })
 
-          if (!recyclerView.canScrollVertically(-1)) {
-            // we have reached the top of the list
-            toolbar?.elevation = 0f
-          } else {
-            // we are not at the top yet
-            toolbar?.elevation = 20f
-          }
-        }
-      })
-    }*/
+    viewModel.closeNote.observe(this, Observer {
+      NavHostFragment.findNavController(this).navigateUp()
+    })
   }
 
   override fun onStart() {
@@ -64,12 +56,17 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     // Inflate the menu; this adds items to the action bar if it is present.
     menuInflater.inflate(R.menu.note_detail_menu, menu)
     menu.getItem(0).setOnMenuItemClickListener(this)
+    menu.getItem(1).setOnMenuItemClickListener(this)
   }
 
   override fun onMenuItemClick(item: MenuItem?): Boolean {
     when (item?.itemId) {
       R.id.action_delete -> {
         viewModel.onDeleteClick()
+        return true
+      }
+      R.id.action_save -> {
+        viewModel.onSaveClick()
         return true
       }
     }

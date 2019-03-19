@@ -40,6 +40,10 @@ class NotesListFragment: BaseFragment() {
 
     swipe_refresh.setOnRefreshListener(viewModel::onRefresh)
 
+    add_button.setOnClickListener {
+      viewModel.onAddClick()
+    }
+
     viewModel.notes.observe(this, Observer { notes ->
       notesAdapter?.notes = notes
       swipe_refresh.isRefreshing = false

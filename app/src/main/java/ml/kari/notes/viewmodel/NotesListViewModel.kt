@@ -21,6 +21,10 @@ class NotesListViewModel(
     notesRepository.updateNotes()
   }
 
+  fun onAddClick() {
+    openNote.value = Note()
+  }
+
   fun onNoteClick(note: Note) {
     openNote.value = note
   }
