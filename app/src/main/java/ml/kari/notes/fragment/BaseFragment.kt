@@ -30,4 +30,6 @@ abstract class BaseFragment: Fragment() {
     }
     return result
   }
+
+  protected fun isTablet(): Boolean = resources.getBoolean(R.bool.is_tablet)
 }

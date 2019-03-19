@@ -30,6 +30,9 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     val supportActivity = activity as AppCompatActivity
     supportActivity.setSupportActionBar(toolbar)
     supportActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+    if (!isTablet()) {
+      supportActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
   }
 
   override fun addListeners() {
