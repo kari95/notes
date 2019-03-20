@@ -11,7 +11,7 @@ class NotesListViewModel(
 
   val notes: LiveData<List<SavedNote>> = Transformations.map(notesRepository.notes, this::mapNotes)
 
-  val openNote: SingleLiveEvent<Note> = SingleLiveEvent()
+  val openNote: LiveData<Event<Note>> = MutableLiveData()
 
   override fun onAttachedView() {
     notesRepository.updateNotes()
@@ -22,11 +22,11 @@ class NotesListViewModel(
   }
 
   fun onAddClick() {
-    openNote.value = Note()
+    (openNote as MutableLiveData).value = Event(Note())
   }
 
   fun onNoteClick(note: SavedNote) {
-    openNote.value = note
+    (openNote as MutableLiveData).value = Event(note)
   }
 
   private fun mapNotes(receivedNotes: List<SavedNote>?): List<SavedNote>? {

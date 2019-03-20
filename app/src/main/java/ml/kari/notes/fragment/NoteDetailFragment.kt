@@ -12,9 +12,9 @@ import ml.kari.notes.util.*
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
 
-class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
+class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener, OnBackPressedListener {
 
-  private val viewModel: NoteDetailViewModel by sharedViewModel()
+  private val viewModel: NoteDetailViewModel by viewModel()
   private val args: NoteDetailFragmentArgs by navArgs()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -44,38 +44,56 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     }
   }
 
+  override fun onBackPressed(): Boolean {
+    viewModel.onBackClick()
+    return true
+  }
+
   override fun addListeners() {
 
-    note_text.afterTextChanged {  text ->
-      viewModel.onNoteChanged(text)
-    }
+    view?.setOnKeyListener(object: View.OnKeyListener {
+      override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+          viewModel.onBackClick()
+          return true
+        }
+        return false
+      }
+    })
+
+    detail_toolbar.setNavigationOnClickListener { viewModel.onBackClick() }
+    note_text.afterTextChanged { text -> viewModel.onNoteChanged(text) }
 
     viewModel.note.observe(this, Observer { note ->
       note_text.setText(note?.title)
     })
 
-    viewModel.errorMessage.observe(this, Observer { message ->
-      if (message != null) {
+    viewModel.errorMessage.observe(this, Observer { event ->
+      event.getContentIfNotHandled()?.let { message ->
         Snackbar.make(note_text, message, Snackbar.LENGTH_LONG)
           .show()
       }
     })
 
     viewModel.closeNote.observe(this, Observer {
-      NavHostFragment.findNavController(this).navigateUp()
+      it.getContentIfNotHandled()?.let {
+        NavHostFragment.findNavController(this).navigateUp()
+      }
     })
     viewModel.loading.observe(this, Observer { visible ->
       loading_overlay.visibility = if (visible == true) View.VISIBLE else View.GONE
     })
 
-    viewModel.showConfirmDialog.observe(this, Observer { callback ->
-      context?.let { context ->
-        AlertDialog.Builder(context, R.style.AlertDialog)
-          .setTitle(R.string.warning)
-          .setMessage(R.string.really)
-          .setPositiveButton(android.R.string.yes) { _, _ -> callback(true) }
-          .setNegativeButton(android.R.string.no) { _, _ -> callback(false) }
-          .show()
+    viewModel.showConfirmDialog.observe(this, Observer { event ->
+      event.getContentIfNotHandled()?.let { callback ->
+        context?.let { context ->
+          AlertDialog.Builder(context, R.style.AlertDialog)
+            .setTitle(R.string.warning)
+            .setMessage(R.string.really)
+            .setPositiveButton(android.R.string.yes) { _, _ -> callback(true) }
+            .setNegativeButton(android.R.string.no) { _, _ -> callback(false) }
+            .show()
+        }
       }
     })
   }

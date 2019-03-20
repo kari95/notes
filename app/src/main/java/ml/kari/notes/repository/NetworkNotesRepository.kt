@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import ml.kari.notes.model.*
 import ml.kari.notes.network.*
-import retrofit2.*
 import timber.log.*
 import java.util.*
 

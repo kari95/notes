@@ -2,15 +2,7 @@ package ml.kari.notes.fragment
 
 import android.os.*
 import android.view.*
-import androidx.appcompat.app.*
-import androidx.lifecycle.*
-import androidx.navigation.fragment.*
-import com.google.android.material.snackbar.*
-import kotlinx.android.synthetic.main.fragment_note_detail.*
-import ml.kari.notes.R
-import ml.kari.notes.util.*
-import ml.kari.notes.viewmodel.*
-import org.koin.androidx.viewmodel.ext.android.*
+import ml.kari.notes.*
 
 class NoteEmptyFragment: BaseFragment() {
 

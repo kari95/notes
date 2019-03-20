@@ -5,7 +5,6 @@ import android.view.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.*
-import kotlinx.android.synthetic.main.fragment_note_detail.*
 import kotlinx.android.synthetic.main.fragment_notes_list.*
 import ml.kari.notes.R
 import ml.kari.notes.adapter.*
@@ -61,8 +60,8 @@ class NotesListFragment: BaseFragment() {
       swipe_refresh.isRefreshing = false
     })
 
-    viewModel.errorMessage.observe(this, Observer { message ->
-      if (message != null && snackbar?.isShown != true) {
+    viewModel.errorMessage.observe(this, Observer { event ->
+      event.getContentIfNotHandled()?.let { message ->
         snackbar = Snackbar.make(notes_list, message, Snackbar.LENGTH_LONG)
         snackbar?.show()
       }

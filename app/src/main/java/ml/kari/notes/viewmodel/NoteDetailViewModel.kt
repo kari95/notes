@@ -3,7 +3,6 @@ package ml.kari.notes.viewmodel
 import androidx.lifecycle.*
 import ml.kari.notes.model.*
 import ml.kari.notes.repository.*
-import ml.kari.notes.R
 import ml.kari.notes.livedata.*
 
 class NoteDetailViewModel(
@@ -14,8 +13,8 @@ class NoteDetailViewModel(
 
   val note: LiveData<Note> = MediatorLiveData()
 
-  val closeNote: SingleLiveEvent<Unit> = SingleLiveEvent()
-  val showConfirmDialog: SingleLiveEvent<(Boolean) -> Unit> = SingleLiveEvent()
+  val closeNote: LiveData<Event<Unit>> = MutableLiveData()
+  val showConfirmDialog: LiveData<Event<(Boolean) -> Unit>> = MutableLiveData()
   val loading: LiveData<Boolean> = MutableLiveData()
 
   private var noteChanged: Boolean = false
@@ -117,10 +116,10 @@ class NoteDetailViewModel(
   }
 
   private fun closeDetail() {
-    closeNote.call()
+    (closeNote as MutableLiveData).value = Event(Unit)
   }
 
   private fun showConfirmationDialog(callback: (Boolean) -> Unit) {
-    showConfirmDialog.value = callback
+    (showConfirmDialog as MutableLiveData).value = Event(callback)
   }
 }
