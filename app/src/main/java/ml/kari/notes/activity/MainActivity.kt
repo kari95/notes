@@ -42,10 +42,11 @@ class MainActivity: AppCompatActivity() {
     listViewModel.openNote.observe(this, Observer { note ->
       if (isTablet()) {
         val action = NoteDetailFragmentDirections.actionOpenDetail()
-        action.noteId = note.id
+        note?.let { action.noteId = it.id }
         detailNavHost?.navController?.navigate(action)
       } else {
-        val action = NotesListFragmentDirections.actionOpenDetail(note.id)
+        val action = NotesListFragmentDirections.actionOpenDetail()
+        note?.let { action.noteId = it.id }
         listNavHost.navController.navigate(action)
       }
     })

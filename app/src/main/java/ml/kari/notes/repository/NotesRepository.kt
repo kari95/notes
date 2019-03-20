@@ -5,11 +5,13 @@ import ml.kari.notes.model.*
 
 interface NotesRepository {
 
-  val notes: LiveData<List<Note>>
+  val notes: LiveData<List<SavedNote>>
 
   fun updateNotes()
 
-  fun getNote(id: Int): LiveData<Note>
+  fun getNote(id: Int): LiveData<SavedNote>
 
-  fun saveNote(note: Note): LiveData<Note>
+  fun saveNote(note: Note): LiveData<SavedNote>
+
+  fun deleteNote(id: Int): LiveData<SavedNote>
 }

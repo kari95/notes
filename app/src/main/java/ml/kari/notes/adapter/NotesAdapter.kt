@@ -6,11 +6,11 @@ import kotlinx.android.synthetic.main.item_note.view.*
 import ml.kari.notes.*
 import ml.kari.notes.model.*
 
-class NotesAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NotesAdapter(private val onClick: (SavedNote) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val _notes: MutableList<Note> = mutableListOf()
+  private val _notes: MutableList<SavedNote> = mutableListOf()
 
-  var notes: List<Note>
+  var notes: List<SavedNote>
     set(value) {
       val result = DiffUtil.calculateDiff(DiffCallback(notes, value))
 
@@ -39,13 +39,13 @@ class NotesAdapter(private val onClick: (Note) -> Unit): RecyclerView.Adapter<Re
 
 class NoteViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-  fun bind(note: Note, listener: (Note) -> Unit) {
+  fun bind(note: SavedNote, listener: (SavedNote) -> Unit) {
     itemView.title.text = note.title
     itemView.container.setOnClickListener { listener(note) }
   }
 }
 
-private class DiffCallback(val oldItems: List<Note>, val newItems: List<Note>)
+private class DiffCallback(val oldItems: List<SavedNote>, val newItems: List<SavedNote>)
   : DiffUtil.Callback() {
 
   override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

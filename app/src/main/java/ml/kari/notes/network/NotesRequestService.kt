@@ -2,20 +2,24 @@ package ml.kari.notes.network
 
 import kotlinx.coroutines.*
 import ml.kari.notes.model.*
+import retrofit2.*
 import retrofit2.http.*
 
 
 interface NotesRequestService {
 
   @GET("notes")
-  fun getNotes(): Deferred<List<Note>>
+  fun getNotes(): Deferred<List<SavedNote>>
 
   @GET("notes/{id}")
-  fun getNote(@Path("id") id: Int): Deferred<Note>
+  fun getNote(@Path("id") id: Int): Deferred<SavedNote>
 
   @POST("notes")
-  fun addNote(@Body note: Note): Deferred<Note>
+  fun addNote(@Body note: Note): Deferred<SavedNote>
 
-  @POST("notes/{id}")
-  fun updateNote(@Path("id") id: Int, @Body note: Note): Deferred<Note>
+  @PUT("notes/{id}")
+  fun updateNote(@Path("id") id: Int, @Body note: Note): Deferred<SavedNote>
+
+  @DELETE("notes/{id}")
+  fun deleteNote(@Path("id") id: Int): Deferred<Response<Unit>>
 }

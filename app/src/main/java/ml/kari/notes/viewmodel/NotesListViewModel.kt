@@ -9,11 +9,11 @@ class NotesListViewModel(
   private val notesRepository: NotesRepository
 ): BaseViewModel() {
 
-  val notes: LiveData<List<Note>> = notesRepository.notes
+  val notes: LiveData<List<SavedNote>> = notesRepository.notes
 
-  val openNote: SingleLiveEvent<Note> = SingleLiveEvent()
+  val openNote: SingleLiveEvent<SavedNote> = SingleLiveEvent()
 
-  fun onScreenShowed() {
+  override fun onAttachedView() {
     notesRepository.updateNotes()
   }
 
@@ -22,10 +22,10 @@ class NotesListViewModel(
   }
 
   fun onAddClick() {
-    openNote.value = Note()
+    openNote.value = null
   }
 
-  fun onNoteClick(note: Note) {
+  fun onNoteClick(note: SavedNote) {
     openNote.value = note
   }
 }

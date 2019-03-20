@@ -21,6 +21,12 @@ class NotesListFragment: BaseFragment() {
     return inflater.inflate(R.layout.fragment_notes_list, container, false)
   }
 
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+
+    viewModel.onAttachedView()
+  }
+
   override fun setupView() {
 
     toolbar_background.layoutParams.height = getStatusBarHeight()
@@ -48,11 +54,5 @@ class NotesListFragment: BaseFragment() {
       notesAdapter?.notes = notes
       swipe_refresh.isRefreshing = false
     })
-  }
-
-  override fun onStart() {
-    super.onStart()
-
-    viewModel.onScreenShowed()
   }
 }

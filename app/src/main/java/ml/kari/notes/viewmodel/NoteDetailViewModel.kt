@@ -12,26 +12,63 @@ class NoteDetailViewModel(
 
   private val noteId: MutableLiveData<Int> = MutableLiveData()
 
-  val closeNote: SingleLiveEvent<Unit> = SingleLiveEvent()
+  val note: LiveData<Note> = MediatorLiveData()
 
-  val note: LiveData<Note> = Transformations.switchMap(noteId) { id ->
-    notesRepository.getNote(id)
+  val closeNote: SingleLiveEvent<Unit> = SingleLiveEvent()
+  val loading: LiveData<Boolean> = MutableLiveData()
+
+  init {
+    (note as MediatorLiveData).addSource(Transformations.switchMap(noteId) { id ->
+      (loading as MutableLiveData).value = true
+      return@switchMap getNoteById(id)
+    }) { result ->
+      note.value = result
+      (loading as MutableLiveData).value = false
+    }
   }
 
-  fun onScreenShowed(noteId: Int) {
+  fun onNoteIdChanged(noteId: Int) {
     this.noteId.value = noteId
   }
 
   fun onNoteChanged(text: String) {
 
-    notesRepository.saveNote()
+    note.value?.title = text
   }
 
   fun onDeleteClick() {
-    closeNote.call()
+    note.value?.let { toDelete ->
+
+      if (toDelete is SavedNote) {
+
+        (loading as MutableLiveData).value = true
+
+        (note as MediatorLiveData).addSource(notesRepository.deleteNote(toDelete.id)) {
+          loading.value = false
+          closeNote.call()
+        }
+      } else {
+        closeNote.call()
+      }
+    }
   }
 
   fun onSaveClick() {
-    closeNote.call()
+    note.value?.let { toSave ->
+
+      (loading as MutableLiveData).value = true
+
+      (note as MediatorLiveData).addSource(notesRepository.saveNote(toSave)) { result ->
+        note.value = result
+        loading.value = false
+      }
+    }
+  }
+
+  private fun getNoteById(id: Int): LiveData<Note> {
+    if (id == -1) {
+      return MutableLiveData<Note>().apply { postValue(Note()) }
+    }
+    return Transformations.map(notesRepository.getNote(id)) { it }
   }
 }

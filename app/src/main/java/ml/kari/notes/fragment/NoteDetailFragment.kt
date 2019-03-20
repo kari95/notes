@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 import androidx.navigation.fragment.*
 import kotlinx.android.synthetic.main.fragment_note_detail.*
 import ml.kari.notes.R
+import ml.kari.notes.util.*
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
 
@@ -19,6 +20,13 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     savedInstanceState: Bundle?): View? {
 
     return inflater.inflate(R.layout.fragment_note_detail, container, false)
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+
+    viewModel.onAttachedView()
+    viewModel.onNoteIdChanged(args.noteId)
   }
 
   override fun setupView() {
@@ -37,6 +45,10 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
 
   override fun addListeners() {
 
+    note_text.afterTextChanged {  text ->
+      viewModel.onNoteChanged(text)
+    }
+
     viewModel.note.observe(this, Observer { note ->
       note_text.setText(note.title)
     })
@@ -44,12 +56,9 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     viewModel.closeNote.observe(this, Observer {
       NavHostFragment.findNavController(this).navigateUp()
     })
-  }
-
-  override fun onStart() {
-    super.onStart()
-
-    viewModel.onScreenShowed(args.noteId)
+    viewModel.loading.observe(this, Observer { visible ->
+      loading_overlay.visibility = if (visible) View.VISIBLE else View.GONE
+    })
   }
 
   override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
