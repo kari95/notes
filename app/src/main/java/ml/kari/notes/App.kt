@@ -16,6 +16,7 @@ import timber.log.*
 
 class App: Application() {
 
+  // Dependency injection.
   companion object {
     val applicationModule : Module = module {
       viewModel { NoteDetailViewModel(get()) }

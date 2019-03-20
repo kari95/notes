@@ -43,12 +43,14 @@ class MainActivity: AppCompatActivity() {
   private fun addListeners() {
     listViewModel.openNote.observe(this, Observer { note ->
       if (isTablet()) {
+        // Navigate inside detail nav host.
         val action = NoteDetailFragmentDirections.actionOpenDetail()
         if (note is SavedNote) {
           action.noteId = note.id
         }
         detailNavHost?.navController?.navigate(action)
       } else {
+        // Navigate inside list nav host.
         val action = NotesListFragmentDirections.actionOpenDetail()
         if (note is SavedNote) {
           action.noteId = note.id
