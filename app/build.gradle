@@ -53,9 +53,12 @@ dependencies {
 
   implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
 
+
   testImplementation 'junit:junit:4.12'
-  androidTestImplementation 'androidx.test:runner:1.1.1'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+  testImplementation "org.mockito:mockito-core:2.24.5"
+  testImplementation 'org.powermock:powermock-module-junit4:2.0.0'
+  testImplementation 'org.powermock:powermock-api-mockito2:2.0.0'
+  testImplementation "android.arch.core:core-testing:1.1.1"
 
   // Time Picker
   implementation "com.wdullaer:materialdatetimepicker:3.6.4"

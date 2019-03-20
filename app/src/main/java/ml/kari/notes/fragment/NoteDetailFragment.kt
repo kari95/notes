@@ -88,8 +88,8 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener, OnBa
       event.getContentIfNotHandled()?.let { callback ->
         context?.let { context ->
           AlertDialog.Builder(context, R.style.AlertDialog)
-            .setTitle(R.string.warning)
-            .setMessage(R.string.really)
+            .setTitle(R.string.might_be_lost)
+            .setMessage(R.string.really_continue)
             .setPositiveButton(android.R.string.yes) { _, _ -> callback(true) }
             .setNegativeButton(android.R.string.no) { _, _ -> callback(false) }
             .show()
