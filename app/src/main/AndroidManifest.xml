@@ -17,9 +17,10 @@
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning"
     >
+
     <activity
-      android:name="ml.kari.notes.activity.SplashActivity"
-      android:theme="@style/AppTheme.Launcher"
+      android:name="ml.kari.notes.activity.MainActivity"
+      android:theme="@style/AppTheme.NoActionBar"
       >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -27,12 +28,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
-    </activity>
-
-    <activity
-      android:name="ml.kari.notes.activity.MainActivity"
-      android:theme="@style/AppTheme.NoActionBar"
-      >
       <nav-graph android:value="@navigation/list_navigation"/>
     </activity>
 
