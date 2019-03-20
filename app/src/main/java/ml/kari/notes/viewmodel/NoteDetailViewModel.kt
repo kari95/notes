@@ -36,9 +36,10 @@ class NoteDetailViewModel(
   }
 
   fun onNoteChanged(text: String) {
-
+    if (text != note.value?.title) {
+      noteChanged = true
+    }
     note.value?.title = text
-    noteChanged = true
   }
 
   fun onDeleteClick() {
