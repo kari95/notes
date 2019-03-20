@@ -9,9 +9,9 @@ class NotesListViewModel(
   private val notesRepository: NotesRepository
 ): BaseViewModel() {
 
-  val notes: LiveData<List<SavedNote>> = notesRepository.notes
+  val notes: LiveData<List<SavedNote>> = Transformations.map(notesRepository.notes, this::mapNotes)
 
-  val openNote: SingleLiveEvent<SavedNote> = SingleLiveEvent()
+  val openNote: SingleLiveEvent<Note> = SingleLiveEvent()
 
   override fun onAttachedView() {
     notesRepository.updateNotes()
@@ -22,10 +22,18 @@ class NotesListViewModel(
   }
 
   fun onAddClick() {
-    openNote.value = null
+    openNote.value = Note()
   }
 
   fun onNoteClick(note: SavedNote) {
     openNote.value = note
+  }
+
+  private fun mapNotes(receivedNotes: List<SavedNote>?): List<SavedNote>? {
+    if (receivedNotes == null) {
+      showConnectionError()
+      return notes.value
+    }
+    return receivedNotes
   }
 }

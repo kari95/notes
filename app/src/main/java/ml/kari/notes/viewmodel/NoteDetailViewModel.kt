@@ -3,7 +3,7 @@ package ml.kari.notes.viewmodel
 import androidx.lifecycle.*
 import ml.kari.notes.model.*
 import ml.kari.notes.repository.*
-import androidx.lifecycle.Transformations
+import ml.kari.notes.R
 import ml.kari.notes.livedata.*
 
 class NoteDetailViewModel(
@@ -19,16 +19,16 @@ class NoteDetailViewModel(
 
   init {
     (note as MediatorLiveData).addSource(Transformations.switchMap(noteId) { id ->
-      (loading as MutableLiveData).value = true
+      startLoading()
       return@switchMap getNoteById(id)
     }) { result ->
       note.value = result
-      (loading as MutableLiveData).value = false
+      stopLoading()
     }
   }
 
-  fun onNoteIdChanged(noteId: Int) {
-    this.noteId.value = noteId
+  fun onNoteIdChanged(id: Int) {
+    noteId.value = id
   }
 
   fun onNoteChanged(text: String) {
@@ -41,14 +41,18 @@ class NoteDetailViewModel(
 
       if (toDelete is SavedNote) {
 
-        (loading as MutableLiveData).value = true
-
-        (note as MediatorLiveData).addSource(notesRepository.deleteNote(toDelete.id)) {
-          loading.value = false
-          closeNote.call()
+        startLoading()
+        (note as MediatorLiveData).addSource(
+          notesRepository.deleteNote(toDelete.id)) { removedNote ->
+          stopLoading()
+          if (removedNote == null) {
+            showConnectionError()
+          } else {
+            closeDetail()
+          }
         }
       } else {
-        closeNote.call()
+        closeDetail()
       }
     }
   }
@@ -56,11 +60,14 @@ class NoteDetailViewModel(
   fun onSaveClick() {
     note.value?.let { toSave ->
 
-      (loading as MutableLiveData).value = true
-
-      (note as MediatorLiveData).addSource(notesRepository.saveNote(toSave)) { result ->
-        note.value = result
-        loading.value = false
+      startLoading()
+      (note as MediatorLiveData).addSource(notesRepository.saveNote(toSave)) { savedNote ->
+        stopLoading()
+        if (savedNote == null) {
+          showConnectionError()
+        } else {
+          note.value = savedNote
+        }
       }
     }
   }
@@ -70,5 +77,17 @@ class NoteDetailViewModel(
       return MutableLiveData<Note>().apply { postValue(Note()) }
     }
     return Transformations.map(notesRepository.getNote(id)) { it }
+  }
+
+  private fun startLoading() {
+    (loading as MutableLiveData).value = true
+  }
+
+  private fun stopLoading() {
+    (loading as MutableLiveData).value = false
+  }
+
+  private fun closeDetail() {
+    closeNote.call()
   }
 }

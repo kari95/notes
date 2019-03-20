@@ -4,6 +4,8 @@ import android.os.*
 import android.view.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
+import com.google.android.material.snackbar.*
+import kotlinx.android.synthetic.main.fragment_note_detail.*
 import kotlinx.android.synthetic.main.fragment_notes_list.*
 import ml.kari.notes.R
 import ml.kari.notes.adapter.*
@@ -14,6 +16,8 @@ class NotesListFragment: BaseFragment() {
 
   private val viewModel: NotesListViewModel by sharedViewModel()
   private var notesAdapter: NotesAdapter? = null
+
+  private var snackbar: Snackbar? = null
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
@@ -51,8 +55,17 @@ class NotesListFragment: BaseFragment() {
     }
 
     viewModel.notes.observe(this, Observer { notes ->
-      notesAdapter?.notes = notes
+      if (notes != null) {
+        notesAdapter?.notes = notes
+      }
       swipe_refresh.isRefreshing = false
+    })
+
+    viewModel.errorMessage.observe(this, Observer { message ->
+      if (message != null && snackbar?.isShown != true) {
+        snackbar = Snackbar.make(notes_list, message, Snackbar.LENGTH_LONG)
+        snackbar?.show()
+      }
     })
   }
 }

@@ -5,8 +5,11 @@ import android.view.*
 import androidx.appcompat.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.*
+import com.google.android.material.snackbar.*
+import kotlinx.android.synthetic.main.fragment_note_detail.*
 import ml.kari.notes.R
 import ml.kari.notes.fragment.*
+import ml.kari.notes.model.*
 import ml.kari.notes.viewmodel.*
 import org.koin.androidx.viewmodel.ext.android.*
 
@@ -42,11 +45,15 @@ class MainActivity: AppCompatActivity() {
     listViewModel.openNote.observe(this, Observer { note ->
       if (isTablet()) {
         val action = NoteDetailFragmentDirections.actionOpenDetail()
-        note?.let { action.noteId = it.id }
+        if (note is SavedNote) {
+          action.noteId = note.id
+        }
         detailNavHost?.navController?.navigate(action)
       } else {
         val action = NotesListFragmentDirections.actionOpenDetail()
-        note?.let { action.noteId = it.id }
+        if (note is SavedNote) {
+          action.noteId = note.id
+        }
         listNavHost.navController.navigate(action)
       }
     })

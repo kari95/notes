@@ -3,4 +3,5 @@
           translatable="false">Personal Notes</string>
 
   <string name="enter_text">Enter note text here</string>
+  <string name="connection_error">Connection error</string>
 </resources>

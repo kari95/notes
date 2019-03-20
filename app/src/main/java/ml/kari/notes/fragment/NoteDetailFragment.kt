@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.*
 import androidx.lifecycle.*
 import androidx.navigation.fragment.*
+import com.google.android.material.snackbar.*
 import kotlinx.android.synthetic.main.fragment_note_detail.*
 import ml.kari.notes.R
 import ml.kari.notes.util.*
@@ -50,14 +51,21 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     }
 
     viewModel.note.observe(this, Observer { note ->
-      note_text.setText(note.title)
+      note_text.setText(note?.title)
+    })
+
+    viewModel.errorMessage.observe(this, Observer { message ->
+      if (message != null) {
+        Snackbar.make(note_text, message, Snackbar.LENGTH_LONG)
+          .show()
+      }
     })
 
     viewModel.closeNote.observe(this, Observer {
       NavHostFragment.findNavController(this).navigateUp()
     })
     viewModel.loading.observe(this, Observer { visible ->
-      loading_overlay.visibility = if (visible) View.VISIBLE else View.GONE
+      loading_overlay.visibility = if (visible == true) View.VISIBLE else View.GONE
     })
   }
 

@@ -26,10 +26,11 @@ class NetworkNotesRepository(
         notes.forEach { note ->
           _notes[note.id] = note
         }
-      } catch (e: HttpException) {
+        propagateNotes()
+      } catch (e: Throwable) {
         Timber.e(e)
+        (notes as MutableLiveData).postValue(null)
       }
-      propagateNotes()
     }
   }
 
@@ -44,7 +45,7 @@ class NetworkNotesRepository(
 
         val note = notesRequestService.getNote(id).await()
         data.postValue(note)
-      } catch (e: HttpException) {
+      } catch (e: Throwable) {
         Timber.e(e)
         data.postValue(null)
       }
@@ -67,7 +68,7 @@ class NetworkNotesRepository(
         }
         data.postValue(newNote)
         _notes[newNote.id] = newNote
-      } catch (e: HttpException) {
+      } catch (e: Throwable) {
         Timber.e(e)
         data.postValue(null)
       }
@@ -84,7 +85,7 @@ class NetworkNotesRepository(
 
         notesRequestService.deleteNote(id).await()
         data.postValue(_notes.remove(id))
-      } catch (e: HttpException) {
+      } catch (e: Throwable) {
         Timber.e(e)
         data.postValue(null)
       }
