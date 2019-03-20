@@ -15,7 +15,10 @@ class NoteDetailViewModel(
   val note: LiveData<Note> = MediatorLiveData()
 
   val closeNote: SingleLiveEvent<Unit> = SingleLiveEvent()
+  val showConfirmDialog: SingleLiveEvent<(Boolean) -> Unit> = SingleLiveEvent()
   val loading: LiveData<Boolean> = MutableLiveData()
+
+  private var noteChanged: Boolean = false
 
   init {
     (note as MediatorLiveData).addSource(Transformations.switchMap(noteId) { id ->
@@ -23,6 +26,7 @@ class NoteDetailViewModel(
       return@switchMap getNoteById(id)
     }) { result ->
       note.value = result
+      noteChanged = false
       stopLoading()
     }
   }
@@ -34,9 +38,47 @@ class NoteDetailViewModel(
   fun onNoteChanged(text: String) {
 
     note.value?.title = text
+    noteChanged = true
   }
 
   fun onDeleteClick() {
+
+    showConfirmationDialog { confirmed ->
+      if (confirmed) {
+        deleteNote()
+      }
+    }
+  }
+
+  fun onSaveClick() {
+    note.value?.let { toSave ->
+
+      startLoading()
+      (note as MediatorLiveData).addSource(notesRepository.saveNote(toSave)) { savedNote ->
+        stopLoading()
+        if (savedNote == null) {
+          showConnectionError()
+        } else {
+          note.value = savedNote
+          noteChanged = false
+        }
+      }
+    }
+  }
+
+  fun onBackClick() {
+    if (!noteChanged) {
+      closeDetail()
+    } else {
+      showConfirmationDialog { confirmed ->
+        if (confirmed) {
+          closeDetail()
+        }
+      }
+    }
+  }
+
+  private fun deleteNote() {
     note.value?.let { toDelete ->
 
       if (toDelete is SavedNote) {
@@ -57,23 +99,9 @@ class NoteDetailViewModel(
     }
   }
 
-  fun onSaveClick() {
-    note.value?.let { toSave ->
-
-      startLoading()
-      (note as MediatorLiveData).addSource(notesRepository.saveNote(toSave)) { savedNote ->
-        stopLoading()
-        if (savedNote == null) {
-          showConnectionError()
-        } else {
-          note.value = savedNote
-        }
-      }
-    }
-  }
-
   private fun getNoteById(id: Int): LiveData<Note> {
     if (id == -1) {
+      noteChanged = true
       return MutableLiveData<Note>().apply { postValue(Note()) }
     }
     return Transformations.map(notesRepository.getNote(id)) { it }
@@ -89,5 +117,9 @@ class NoteDetailViewModel(
 
   private fun closeDetail() {
     closeNote.call()
+  }
+
+  private fun showConfirmationDialog(callback: (Boolean) -> Unit) {
+    showConfirmDialog.value = callback
   }
 }

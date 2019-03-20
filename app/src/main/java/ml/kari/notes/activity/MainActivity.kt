@@ -5,8 +5,6 @@ import android.view.*
 import androidx.appcompat.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.*
-import com.google.android.material.snackbar.*
-import kotlinx.android.synthetic.main.fragment_note_detail.*
 import ml.kari.notes.R
 import ml.kari.notes.fragment.*
 import ml.kari.notes.model.*
@@ -16,6 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.*
 class MainActivity: AppCompatActivity() {
 
   private val listViewModel: NotesListViewModel by viewModel()
+  private val detailViewModel: NoteDetailViewModel by viewModel()
 
   private lateinit var listNavHost: NavHostFragment
   private var detailNavHost: NavHostFragment? = null
@@ -59,9 +58,8 @@ class MainActivity: AppCompatActivity() {
     })
   }
 
-  override fun onSupportNavigateUp(): Boolean {
-    return listNavHost.navController.navigateUp() || super
-      .onSupportNavigateUp()
+  override fun onBackPressed() {
+    detailViewModel.onBackClick()
   }
 
   private fun isTablet(): Boolean = resources.getBoolean(R.bool.is_tablet)

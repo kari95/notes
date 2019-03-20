@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.*
 
 class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
 
-  private val viewModel: NoteDetailViewModel by viewModel()
+  private val viewModel: NoteDetailViewModel by sharedViewModel()
   private val args: NoteDetailFragmentArgs by navArgs()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +66,17 @@ class NoteDetailFragment: BaseFragment(), MenuItem.OnMenuItemClickListener {
     })
     viewModel.loading.observe(this, Observer { visible ->
       loading_overlay.visibility = if (visible == true) View.VISIBLE else View.GONE
+    })
+
+    viewModel.showConfirmDialog.observe(this, Observer { callback ->
+      context?.let { context ->
+        AlertDialog.Builder(context, R.style.AlertDialog)
+          .setTitle(R.string.warning)
+          .setMessage(R.string.really)
+          .setPositiveButton(android.R.string.yes) { _, _ -> callback(true) }
+          .setNegativeButton(android.R.string.no) { _, _ -> callback(false) }
+          .show()
+      }
     })
   }
 

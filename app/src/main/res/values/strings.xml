@@ -4,4 +4,7 @@
 
   <string name="enter_text">Enter note text here</string>
   <string name="connection_error">Connection error</string>
+
+  <string name="warning">Warning!</string>
+  <string name="really">Really continue?</string>
 </resources>

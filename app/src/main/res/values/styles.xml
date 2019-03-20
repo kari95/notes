@@ -23,6 +23,11 @@
          parent="AppTheme">
   </style>
 
-
+  <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <item name="android:textColor">@color/colorSecondaryText</item>
+    <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+    <item name="android:colorAccent"
+          tools:targetApi="lollipop">@color/colorPrimaryText</item>
+  </style>
 
 </resources>
